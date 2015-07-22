@@ -28,15 +28,22 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 18
         targetSdkVersion 21
+        // Enabling multidex support.
+        multiDexEnabled true
+
+        dexOptions {
+            incremental true
+            javaMaxHeapSize "4g"
+        }
     }
 
     signingConfigs {
         debug {
-            storeFile file("../android/debug.keystore")
+            storeFile file("../android/debugkey.jks")
             storePassword "android"
-            keyAlias "androiddebugkey"
+            keyAlias "ioschedkey"
             keyPassword "android"
         }
         release {
@@ -98,4 +105,7 @@ dependencies {
        they should be removed. */
     compile 'com.google.http-client:google-http-client-gson:1.+'
     compile 'com.google.apis:google-api-services-drive:+'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'nl.littlerobots.bean:beanlib:0.9.2'
+
 }

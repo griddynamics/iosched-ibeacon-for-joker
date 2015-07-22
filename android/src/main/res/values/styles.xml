@@ -144,6 +144,12 @@
         <item name="android:windowBackground">@color/gray_background</item>
     </style>
 
+    <!--Ibeacon Menu -->
+    <style name="Theme.IOSched.Ibeacon" parent="Theme.IOSched.WithNavDrawer">
+        <item name="android:windowBackground">@color/gray_background</item>
+    </style>
+
+
     <!-- Account chooser -->
     <style name="Theme.IOSched.Accounts" parent="Theme.IOSched">
         <item name="android:actionBarStyle">@style/ActionBar.Accounts</item>

@@ -396,6 +396,9 @@
     open Google+ stream of posts that uses the hashtag [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_social">Social</string>
 
+    <!-- iBeacons -->
+    <string name="navdrawer_item_ibeacon">iBeacons</string>
+
     <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_video_library">Video library</string>
 

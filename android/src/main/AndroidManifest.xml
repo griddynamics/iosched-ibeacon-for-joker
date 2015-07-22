@@ -84,7 +84,8 @@
         android:theme="@style/Theme.IOSched"
         android:hardwareAccelerated="true"
         android:allowBackup="true"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:name="android.support.multidex.MultiDexApplication">
 
         <!-- Google Play Services -->
         <meta-data
@@ -108,6 +109,11 @@
             android:name=".ui.SocialActivity"
             android:label="@string/navdrawer_item_social"
             android:theme="@style/Theme.IOSched.Social" />
+
+        <activity
+                android:name="com.google.samples.apps.ibeaconapp.IbeaconActivity"
+                android:label="@string/navdrawer_item_ibeacon"
+                android:theme="@style/Theme.IOSched.Ibeacon" />
 
         <activity android:name=".ui.SessionLivestreamActivity"
             android:label="@string/session_livestream_title"

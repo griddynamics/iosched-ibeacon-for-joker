@@ -66,6 +66,7 @@ import android.widget.Toast;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.samples.apps.ibeaconapp.IbeaconActivity;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
@@ -143,11 +144,12 @@ public abstract class BaseActivity extends ActionBarActivity implements
     protected static final int NAVDRAWER_ITEM_EXPLORE = 1;
     protected static final int NAVDRAWER_ITEM_MAP = 2;
     protected static final int NAVDRAWER_ITEM_SOCIAL = 3;
-    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 4;
-    protected static final int NAVDRAWER_ITEM_SIGN_IN = 5;
-    protected static final int NAVDRAWER_ITEM_SETTINGS = 6;
-    protected static final int NAVDRAWER_ITEM_EXPERTS_DIRECTORY = 7;
-    protected static final int NAVDRAWER_ITEM_PEOPLE_IVE_MET = 8;
+    protected static final int NAVDRAWER_ITEM_IBEACON = 4;
+    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 5;
+    protected static final int NAVDRAWER_ITEM_SIGN_IN = 6;
+    protected static final int NAVDRAWER_ITEM_SETTINGS = 7;
+    protected static final int NAVDRAWER_ITEM_EXPERTS_DIRECTORY = 8;
+    protected static final int NAVDRAWER_ITEM_PEOPLE_IVE_MET = 9;
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
     protected static final int NAVDRAWER_ITEM_SEPARATOR = -2;
     protected static final int NAVDRAWER_ITEM_SEPARATOR_SPECIAL = -3;
@@ -158,6 +160,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
             R.string.navdrawer_item_explore,
             R.string.navdrawer_item_map,
             R.string.navdrawer_item_social,
+            R.string.navdrawer_item_ibeacon,
             R.string.navdrawer_item_video_library,
             R.string.navdrawer_item_sign_in,
             R.string.navdrawer_item_settings,
@@ -171,6 +174,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
             R.drawable.ic_drawer_explore,  // Explore
             R.drawable.ic_drawer_map, // Map
             R.drawable.ic_drawer_social, // Social
+            R.drawable.ic_drawer_settings, // Ibeacon
             R.drawable.ic_drawer_video_library, // Video Library
             0, // Sign in
             R.drawable.ic_drawer_settings,
@@ -479,6 +483,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
         // Other items that are always in the nav drawer irrespective of whether the
         // attendee is on-site or remote:
         mNavDrawerItems.add(NAVDRAWER_ITEM_SOCIAL);
+        mNavDrawerItems.add(NAVDRAWER_ITEM_IBEACON);
         mNavDrawerItems.add(NAVDRAWER_ITEM_VIDEO_LIBRARY);
         mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR_SPECIAL);
         mNavDrawerItems.add(NAVDRAWER_ITEM_SETTINGS);
@@ -835,6 +840,11 @@ public abstract class BaseActivity extends ActionBarActivity implements
                 break;
             case NAVDRAWER_ITEM_SOCIAL:
                 intent = new Intent(this, SocialActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case NAVDRAWER_ITEM_IBEACON:
+                intent = new Intent(this, IbeaconActivity.class);
                 startActivity(intent);
                 finish();
                 break;
