@@ -33,11 +33,12 @@
         <include layout="@layout/toolbar_actionbar_with_headerbar" />
 
         <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Discovered beans:"
-                android:id="@+id/textView"/>
+                android:text="Discovered beans"
+                android:id="@+id/textView"
+                android:layout_gravity="center_horizontal"/>
 
         <ListView
                 android:layout_width="match_parent"

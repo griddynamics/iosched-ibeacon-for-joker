@@ -1,13 +1,10 @@
 package com.google.samples.apps.ibeaconapp.beaconinterface;
 
-import java.util.List;
+import android.app.Activity;
+import android.widget.ArrayAdapter;
 
 public interface IbeaconInerface {
 
-    List<Ibeacon> getBeaconsList();
-
-    List<String> getBeaconsNameAndAddress();
-
-
+    void showIbeacons(final ArrayAdapter adapter, final Activity iBeaconActivity);
 
 }

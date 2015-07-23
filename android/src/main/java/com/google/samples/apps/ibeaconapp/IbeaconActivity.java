@@ -3,11 +3,9 @@ package com.google.samples.apps.ibeaconapp;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.google.samples.apps.ibeaconapp.beaconinterface.Ibeacon;
 import com.google.samples.apps.ibeaconapp.lightbluebean.LightBlueBeanManager;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.HashtagsFragment;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 
 import java.util.ArrayList;
@@ -25,7 +23,6 @@ public class IbeaconActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (isFinishing()) {
             return;
         }
@@ -34,19 +31,11 @@ public class IbeaconActivity extends BaseActivity {
 
         LightBlueBeanManager lightBlueBeanManager = new LightBlueBeanManager();
 
-        List<Ibeacon> beans = lightBlueBeanManager.getBeaconsList();
-
-        for (Ibeacon ibeacon : beans) {
-            System.out.println("MainActivity: \n" + ibeacon.getName() + ": " + ibeacon.getAddress());
-        }
-
         ListView listView = (ListView) findViewById(R.id.IbeaconListView);
-
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beansStrings);
-
         listView.setAdapter(adapter);
 
-        lightBlueBeanManager.putInAdapter(adapter, IbeaconActivity.this);
+        lightBlueBeanManager.showIbeacons(adapter, IbeaconActivity.this);
 
         adapter.notifyDataSetChanged();
 
