@@ -54,9 +54,9 @@ public class LightBlueBeanManager implements IbeaconInerface {
         mTimerTask = new BeanUpdateTimerTask();
         listViewAdapter = adapter;
         this.iBeaconActivity = iBeaconActivity;
-        mTimer.schedule(mTimerTask,0,scanDelay + 1000);
         BeanManager.setScanTimeout(scanDelay);
-
+        BeanManager.setScanTimeout(scanDelay);
+        mTimer.schedule(mTimerTask, 0, scanDelay + timerDelay);
     }
 
     class BeanUpdateTimerTask extends TimerTask {
@@ -66,7 +66,9 @@ public class LightBlueBeanManager implements IbeaconInerface {
             iBeaconActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
                     if (iBeaconActivity.hasWindowFocus()) {
+
                         BeanManager.getInstance().cancelDiscovery();
                         listViewAdapter.clear();
                         Collections.sort(beaconRssiList);
@@ -74,6 +76,7 @@ public class LightBlueBeanManager implements IbeaconInerface {
                         beaconRssiList.clear();
                         listViewAdapter.notifyDataSetChanged();
                         BeanManager.getInstance().startDiscovery(beanDiscoveryListener);
+
                     }
 
                 }
