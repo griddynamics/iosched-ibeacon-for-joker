@@ -1451,8 +1451,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
         }
 
         try {
-            // TODO:Maybe we need this peace of code!
-//            GCMRegistrar.onDestroy(this);
+            GCMRegistrar.onDestroy(this);
         } catch (Exception e) {
             LOGW(TAG, "C2DM unregistration error", e);
         }
