@@ -14,6 +14,7 @@ import nl.littlerobots.bean.BeanManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class LightBlueBeanManager implements IbeaconInerface {
 
@@ -37,17 +38,19 @@ public class LightBlueBeanManager implements IbeaconInerface {
 
         listener = new BeanDiscoveryListener() {
             @Override
-            public void onBeanDiscovered(Bean bean) {
-//                int rssi = new Intent().getShortExtra(bean.getDevice().EXTRA_RSSI,Short.MIN_VALUE);
+            public void onBeanDiscovered(Bean bean, int rssi, List<UUID> uuids) {
+
                 String s = "Name: \"" + bean.getDevice().getName() + "\"\nAddress: \"" + bean.getDevice().getAddress() + "\""
-                        + "\nRSSI: " + "Maybe later.." + "dBm";
+                        + "\nRSSI: " + rssi + "dBm";
                 Log.v("Bean discovered!", s);
                 System.out.println("startDiscovery(listener): \n" + bean.getDevice().getName() + ": " + bean.getDevice().getName());
                 ibeaconList.add(new LightBlueBeanBeacon(bean));
                 beanString.add(s);
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onDiscoveryComplete() {
+                adapter.notifyDataSetChanged();
             }
         };
         BeanManager.getInstance().startDiscovery(listener);
@@ -93,14 +96,12 @@ public class LightBlueBeanManager implements IbeaconInerface {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        synchronized (syncKey) {
                             System.out.println("Thread@.currentThread().getName() = " + Thread.currentThread().getName());
                             adapter.clear();
                             adapter.addAll(beanString);
                             adapter.notifyDataSetChanged();
                             beanString.clear();
                             BeanManager.getInstance().startDiscovery(listener);
-                        }
                     }
 
                 });
