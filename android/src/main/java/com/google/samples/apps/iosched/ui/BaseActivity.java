@@ -452,14 +452,14 @@ public abstract class BaseActivity extends ActionBarActivity implements
         mNavDrawerItems.clear();
 
         // decide which items will appear in the nav drawer
-        if (AccountUtils.hasActiveAccount(this)) {
+        //if (AccountUtils.hasActiveAccount(this)) {
             // Only logged-in users can save sessions, so if there is no active account,
             // there is no My Schedule
             mNavDrawerItems.add(NAVDRAWER_ITEM_MY_SCHEDULE);
-        } else {
+        //} else {
             // If no active account, show Sign In
-            mNavDrawerItems.add(NAVDRAWER_ITEM_SIGN_IN);
-        }
+            //mNavDrawerItems.add(NAVDRAWER_ITEM_SIGN_IN);
+        //}
 
         // Explore is always shown
         mNavDrawerItems.add(NAVDRAWER_ITEM_EXPLORE);
@@ -1022,7 +1022,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
             performDataBootstrap();
         }
 
-        startLoginProcess();
+        //startLoginProcess();
     }
 
     /**
