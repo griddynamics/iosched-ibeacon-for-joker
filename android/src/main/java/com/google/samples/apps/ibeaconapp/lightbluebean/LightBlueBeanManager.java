@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import com.google.samples.apps.ibeaconapp.beaconinterface.Ibeacon;
 import com.google.samples.apps.ibeaconapp.beaconinterface.IbeaconInerface;
@@ -11,101 +12,74 @@ import nl.littlerobots.bean.Bean;
 import nl.littlerobots.bean.BeanDiscoveryListener;
 import nl.littlerobots.bean.BeanManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class LightBlueBeanManager implements IbeaconInerface {
 
-    private List<Ibeacon> ibeaconList = new ArrayList<Ibeacon>();
-
-    BeanDiscoveryListener listener;
-
-    List<String> beanString = new ArrayList<String>();
-
-    Object syncKey = new Object();
+    private Timer mTimer;
+    private BeanUpdateTimerTask mTimerTask;
+    private Activity iBeaconActivity;
+    private ArrayAdapter listViewAdapter;
+    private BeanDiscoveryListener beanDiscoveryListener;
+    private final long scanDelay = 4000L;
+    private final long timerDelay = 1000L;
+    private List<String> beaconRssiList = new ArrayList<String>();
 
     @Override
     public List<Ibeacon> getBeaconsList() {
-        return ibeaconList;
-    }
-
-    public List<Ibeacon> putInAdapter(final ArrayAdapter adapter, Activity activity) {
-
-        AsynkTaskBeanSearching asynkTaskBeanSearching = new AsynkTaskBeanSearching(adapter, ibeaconList, activity);
-        asynkTaskBeanSearching.execute();
-
-        listener = new BeanDiscoveryListener() {
-            @Override
-            public void onBeanDiscovered(Bean bean, int rssi, List<UUID> uuids) {
-
-                String s = "Name: \"" + bean.getDevice().getName() + "\"\nAddress: \"" + bean.getDevice().getAddress() + "\""
-                        + "\nRSSI: " + rssi + "dBm";
-                Log.v("Bean discovered!", s);
-                System.out.println("startDiscovery(listener): \n" + bean.getDevice().getName() + ": " + bean.getDevice().getName());
-                ibeaconList.add(new LightBlueBeanBeacon(bean));
-                beanString.add(s);
-                adapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onDiscoveryComplete() {
-                adapter.notifyDataSetChanged();
-            }
-        };
-        BeanManager.getInstance().startDiscovery(listener);
-        return ibeaconList;
+        return null;
     }
 
     @Override
     public List<String> getBeaconsNameAndAddress() {
-
-        List<String> beaconNamesAndAddresses = new ArrayList<String>();
-
-        for (Ibeacon ibeacon : ibeaconList) {
-            beaconNamesAndAddresses.add(ibeacon.getName() + ": " + ibeacon.getName());
-        }
-
-        return beaconNamesAndAddresses;
+        return null;
     }
 
-    class AsynkTaskBeanSearching extends AsyncTask<Void, Void, Void> {
+    public void showIbeacons(final ArrayAdapter adapter, final Activity iBeaconActivity) {
 
-        Activity activity;
+        beanDiscoveryListener = new BeanDiscoveryListener() {
+            @Override
+            public void onBeanDiscovered(Bean bean, int rssi, List<UUID> list) {
+                beaconRssiList.add("Name: " + bean.getDevice().getName() + "\nAddress: "
+                        + bean.getDevice().getAddress() + "\nRSSI: " + rssi + "dBm");
+            }
 
-        ArrayAdapter adapter;
-        List<Ibeacon> ibeaconsList;
+            @Override
+            public void onDiscoveryComplete() {
+                System.out.println("COMPLETE!");
+            }
+        };
 
-        AsynkTaskBeanSearching(ArrayAdapter adapter, List<Ibeacon> ibeaconsList, Activity activity) {
-            this.adapter = adapter;
-            this.ibeaconsList = ibeaconsList;
-            this.activity = activity;
-        }
+        mTimer = new Timer();
+        mTimerTask = new BeanUpdateTimerTask();
+        listViewAdapter = adapter;
+        this.iBeaconActivity = iBeaconActivity;
+        mTimer.schedule(mTimerTask,0,scanDelay + 1000);
+        BeanManager.setScanTimeout(scanDelay);
 
+    }
+
+    class BeanUpdateTimerTask extends TimerTask {
         @Override
-        protected Void doInBackground(Void... params) {
-            while (true) {
-                try {
-                    Thread.sleep(2000);
-                    System.out.println("Thread.currentThread().getName() = " + Thread.currentThread().getName());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Collections.sort(beanString);
+        public void run() {
 
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                            System.out.println("Thread@.currentThread().getName() = " + Thread.currentThread().getName());
-                            adapter.clear();
-                            adapter.addAll(beanString);
-                            adapter.notifyDataSetChanged();
-                            beanString.clear();
-                            BeanManager.getInstance().startDiscovery(listener);
+            iBeaconActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (iBeaconActivity.hasWindowFocus()) {
+                        BeanManager.getInstance().cancelDiscovery();
+                        listViewAdapter.clear();
+                        Collections.sort(beaconRssiList);
+                        listViewAdapter.addAll(beaconRssiList);
+                        beaconRssiList.clear();
+                        listViewAdapter.notifyDataSetChanged();
+                        BeanManager.getInstance().startDiscovery(beanDiscoveryListener);
                     }
 
-                });
-            }
+                }
+            });
+
         }
     }
+
 }

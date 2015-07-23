@@ -25,7 +25,6 @@ public class IbeaconActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (isFinishing()) {
             return;
         }
@@ -34,19 +33,11 @@ public class IbeaconActivity extends BaseActivity {
 
         LightBlueBeanManager lightBlueBeanManager = new LightBlueBeanManager();
 
-        List<Ibeacon> beans = lightBlueBeanManager.getBeaconsList();
-
-        for (Ibeacon ibeacon : beans) {
-            System.out.println("MainActivity: \n" + ibeacon.getName() + ": " + ibeacon.getAddress());
-        }
-
         ListView listView = (ListView) findViewById(R.id.IbeaconListView);
-
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beansStrings);
-
         listView.setAdapter(adapter);
 
-        lightBlueBeanManager.putInAdapter(adapter, IbeaconActivity.this);
+        lightBlueBeanManager.showIbeacons(adapter, IbeaconActivity.this);
 
         adapter.notifyDataSetChanged();
 
