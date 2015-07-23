@@ -3,11 +3,9 @@ package com.google.samples.apps.ibeaconapp;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.google.samples.apps.ibeaconapp.beaconinterface.Ibeacon;
 import com.google.samples.apps.ibeaconapp.lightbluebean.LightBlueBeanManager;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.HashtagsFragment;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 
 import java.util.ArrayList;
