@@ -66,7 +66,7 @@ import android.widget.Toast;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.samples.apps.ibeaconapp.IbeaconActivity;
+import com.google.samples.apps.ibeaconapp.IBeaconActivity;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
@@ -174,7 +174,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
             R.drawable.ic_drawer_explore,  // Explore
             R.drawable.ic_drawer_map, // Map
             R.drawable.ic_drawer_social, // Social
-            R.drawable.ic_drawer_settings, // Ibeacon
+            R.drawable.ic_drawer_settings, // IBeacon
             R.drawable.ic_drawer_video_library, // Video Library
             0, // Sign in
             R.drawable.ic_drawer_settings,
@@ -844,7 +844,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
                 finish();
                 break;
             case NAVDRAWER_ITEM_IBEACON:
-                intent = new Intent(this, IbeaconActivity.class);
+                intent = new Intent(this, IBeaconActivity.class);
                 startActivity(intent);
                 finish();
                 break;
