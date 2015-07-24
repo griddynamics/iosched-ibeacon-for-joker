@@ -1,10 +1,10 @@
 package com.google.samples.apps.ibeaconapp.lightbluebean;
 
 import android.bluetooth.BluetoothDevice;
-import com.google.samples.apps.ibeaconapp.beaconinterface.Ibeacon;
+import com.google.samples.apps.ibeaconapp.beaconinterface.IBeacon;
 import nl.littlerobots.bean.Bean;
 
-public class LightBlueBeanBeacon implements Ibeacon {
+public class LightBlueBeanBeacon implements IBeacon {
 
     private Bean bean;
 

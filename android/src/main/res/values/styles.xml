@@ -144,7 +144,7 @@
         <item name="android:windowBackground">@color/gray_background</item>
     </style>
 
-    <!--Ibeacon Menu -->
+    <!--IBeacon Menu -->
     <style name="Theme.IOSched.Ibeacon" parent="Theme.IOSched.WithNavDrawer">
         <item name="android:windowBackground">@color/gray_background</item>
     </style>

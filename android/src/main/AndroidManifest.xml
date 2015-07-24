@@ -111,7 +111,7 @@
             android:theme="@style/Theme.IOSched.Social" />
 
         <activity
-                android:name="com.google.samples.apps.ibeaconapp.IbeaconActivity"
+                android:name="com.google.samples.apps.ibeaconapp.IBeaconActivity"
                 android:label="@string/navdrawer_item_ibeacon"
                 android:theme="@style/Theme.IOSched.Ibeacon" />
 

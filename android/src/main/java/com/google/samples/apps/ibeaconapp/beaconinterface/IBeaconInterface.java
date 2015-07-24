@@ -3,8 +3,8 @@ package com.google.samples.apps.ibeaconapp.beaconinterface;
 import android.app.Activity;
 import android.widget.ArrayAdapter;
 
-public interface IbeaconInerface {
+public interface IBeaconInterface {
 
-    void showIbeacons(final ArrayAdapter adapter, final Activity iBeaconActivity);
+    void showIBeacons(final ArrayAdapter adapter, final Activity iBeaconActivity);
 
 }
