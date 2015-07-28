@@ -67,6 +67,7 @@ import android.widget.Toast;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.ibeaconapp.IBeaconActivity;
+import com.google.samples.apps.ibeaconapp.lightbluebean.IBeaconManager;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
@@ -1013,6 +1014,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
 
     @Override
     public void onStart() {
+        IBeaconManager.getInstance().startScanning();
         LOGD(TAG, "onStart");
         super.onStart();
 
@@ -1176,8 +1178,10 @@ public abstract class BaseActivity extends ActionBarActivity implements
 
     @Override
     public void onStop() {
+        IBeaconManager.getInstance().stopScanning();
         LOGD(TAG, "onStop");
         super.onStop();
+
         if (mLoginAndAuthHelper != null) {
             mLoginAndAuthHelper.stop();
         }

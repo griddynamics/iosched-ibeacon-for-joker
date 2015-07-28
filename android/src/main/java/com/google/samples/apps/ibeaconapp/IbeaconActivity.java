@@ -1,17 +1,18 @@
 package com.google.samples.apps.ibeaconapp;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.google.samples.apps.ibeaconapp.lightbluebean.LightBlueBeanManager;
+import com.google.samples.apps.ibeaconapp.beaconinterface.IBeacon;
+import com.google.samples.apps.ibeaconapp.lightbluebean.IBeaconManager;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.util.AnalyticsManager;
+import nl.littlerobots.bean.Bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import java.util.*;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class IBeaconActivity extends BaseActivity {
@@ -19,6 +20,7 @@ public class IBeaconActivity extends BaseActivity {
     private static final String SCREEN_LABEL = "IBeacon";
     private List<String> beansStrings = new ArrayList<String>();
     ArrayAdapter<String> adapter = null;
+    Activity activity = IBeaconActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,20 +31,22 @@ public class IBeaconActivity extends BaseActivity {
 
         setContentView(R.layout.activity_ibeacon);
 
-        LightBlueBeanManager lightBlueBeanManager = new LightBlueBeanManager();
-
         ListView listView = (ListView) findViewById(R.id.IbeaconListView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beansStrings);
         listView.setAdapter(adapter);
 
-        lightBlueBeanManager.showIBeacons(adapter, IBeaconActivity.this);
+        HashMap<Bean, Integer> beanIntegerHashMap = IBeaconManager.getInstance().getBeansAndRssi();
 
-        adapter.notifyDataSetChanged();
-
-        AnalyticsManager.sendScreenView(SCREEN_LABEL);
-        LOGD("Tracker", SCREEN_LABEL);
-
-        overridePendingTransition(0, 0);
+        for (Map.Entry<Bean, Integer> beanIntegerEntry : beanIntegerHashMap.entrySet()) {
+            Bean bean = beanIntegerEntry.getKey();
+            int rssi = beanIntegerEntry.getValue();
+            if (!(bean == null)) {
+                adapter.add("Name: " + bean.getDevice().getName() + "\nAddress: "
+                        + bean.getDevice().getAddress() + "\nRSSI: " + rssi + "dBm");
+            } else {
+                adapter.add("No beacons found CODE:" + rssi);
+            }
+        }
     }
 
     @Override
@@ -55,7 +59,5 @@ public class IBeaconActivity extends BaseActivity {
         super.onResume();
         invalidateOptionsMenu();
     }
-
-
 
 }
