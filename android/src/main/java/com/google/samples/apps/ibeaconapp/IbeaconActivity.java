@@ -35,7 +35,7 @@ public class IBeaconActivity extends BaseActivity {
         listView.setAdapter(adapter);
 
         updateAdapter();
-        mApp
+
     }
 
     @Override
