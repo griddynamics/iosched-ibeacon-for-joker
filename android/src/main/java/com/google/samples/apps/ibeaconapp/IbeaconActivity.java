@@ -2,11 +2,8 @@ package com.google.samples.apps.ibeaconapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.google.samples.apps.ibeaconapp.beaconinterface.IBeacon;
 import com.google.samples.apps.ibeaconapp.lightbluebean.IBeaconManager;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -19,8 +16,8 @@ public class IBeaconActivity extends BaseActivity {
     private static final String TAG = makeLogTag(IBeaconActivity.class);
     private static final String SCREEN_LABEL = "IBeacon";
     private List<String> beansStrings = new ArrayList<String>();
-    ArrayAdapter<String> adapter = null;
-    Activity activity = IBeaconActivity.this;
+    private ArrayAdapter<String> adapter = null;
+    private Activity activity = IBeaconActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +32,23 @@ public class IBeaconActivity extends BaseActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beansStrings);
         listView.setAdapter(adapter);
 
+        updateAdapter();
+    }
+
+    @Override
+    protected int getSelfNavDrawerItem() {
+        return NAVDRAWER_ITEM_IBEACON;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        invalidateOptionsMenu();
+        updateAdapter();
+    }
+
+    private void updateAdapter() {
+
         HashMap<Bean, Integer> beanIntegerHashMap = IBeaconManager.getInstance().getBeansAndRssi();
 
         for (Map.Entry<Bean, Integer> beanIntegerEntry : beanIntegerHashMap.entrySet()) {
@@ -47,17 +61,7 @@ public class IBeaconActivity extends BaseActivity {
                 adapter.add("No beacons found CODE:" + rssi);
             }
         }
-    }
 
-    @Override
-    protected int getSelfNavDrawerItem() {
-        return NAVDRAWER_ITEM_IBEACON;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        invalidateOptionsMenu();
     }
 
 }
