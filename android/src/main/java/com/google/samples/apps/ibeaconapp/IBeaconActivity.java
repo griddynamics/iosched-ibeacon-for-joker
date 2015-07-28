@@ -57,15 +57,9 @@ public class IBeaconActivity extends BaseActivity {
         for (Map.Entry<Bean, Integer> beanIntegerEntry : beanIntegerHashMap.entrySet()) {
             Bean bean = beanIntegerEntry.getKey();
             int rssi = beanIntegerEntry.getValue();
-            if (!(bean == null)) {
-                adapter.add("Name: " + bean.getDevice().getName() + "\nAddress: "
+            adapter.add("Name: " + bean.getDevice().getName() + "\nAddress: "
                         + bean.getDevice().getAddress() + "\nRSSI: " + rssi + "dBm");
-            } else {
-                adapter.add("No beacons found CODE:" + rssi);
-            }
         }
         adapter.notifyDataSetChanged();
-
     }
-
 }

@@ -7,7 +7,7 @@ import nl.littlerobots.bean.BeanManager;
 
 import java.util.*;
 
-public class IBeaconManager implements IBeaconInterface{
+public class IBeaconManager implements IBeaconInterface {
 
     private static volatile IBeaconManager instance;
     private BeanDiscoveryListener beanDiscoveryListener;
@@ -31,7 +31,7 @@ public class IBeaconManager implements IBeaconInterface{
         return localInstance;
     }
 
-    public void startScanning(){
+    public void startScanning() {
         android.util.Log.w("test", "in start THREAD:" + Thread.currentThread().getName());
         beanDiscoveryListener = new BeanDiscoveryListener() {
             @Override
@@ -60,8 +60,7 @@ public class IBeaconManager implements IBeaconInterface{
         }
     }
 
-    public HashMap<Bean, Integer> getBeansAndRssi(){
-        beansAndRssi.put(null,0);
+    public HashMap<Bean, Integer> getBeansAndRssi() {
         return beansAndRssi;
     }
 
