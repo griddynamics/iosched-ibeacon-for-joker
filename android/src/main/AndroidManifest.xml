@@ -85,7 +85,7 @@
         android:maxSdkVersion="18" />
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
+        android:name="com.google.samples.apps.ibeaconapp.IBeaconApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
