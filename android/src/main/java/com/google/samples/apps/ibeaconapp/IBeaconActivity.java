@@ -47,7 +47,6 @@ public class IBeaconActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         invalidateOptionsMenu();
-
         updateAdapter();
     }
 

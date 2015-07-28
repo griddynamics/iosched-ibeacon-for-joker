@@ -32,12 +32,11 @@ public class IBeaconManager implements IBeaconInterface{
     }
 
     public void startScanning(){
+        android.util.Log.w("test", "in start THREAD:" + Thread.currentThread().getName());
         beanDiscoveryListener = new BeanDiscoveryListener() {
             @Override
             public void onBeanDiscovered(Bean bean, int rssi, List<UUID> list) {
-                rssi = 5;
                 tempBeansAndRssi.put(bean, rssi);
-
             }
 
             @Override
@@ -67,6 +66,7 @@ public class IBeaconManager implements IBeaconInterface{
     }
 
     public void stopScanning() {
+        android.util.Log.w("test", "in stop THREAD:" + Thread.currentThread().getName());
         mTimer.cancel();
         mTimer.purge();
         BeanManager.getInstance().cancelDiscovery();

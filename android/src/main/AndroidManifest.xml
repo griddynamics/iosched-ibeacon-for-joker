@@ -92,7 +92,8 @@
         android:label="@string/app_name"
         android:logo="@drawable/actionbar_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IOSched" >
+        android:theme="@style/Theme.IOSched"
+            >
 
         <!-- Google Play Services -->
         <meta-data
@@ -118,7 +119,8 @@
         <activity
             android:name="com.google.samples.apps.ibeaconapp.IBeaconActivity"
             android:label="@string/navdrawer_item_ibeacon"
-            android:theme="@style/Theme.IOSched.Ibeacon" />
+            android:theme="@style/Theme.IOSched.Ibeacon"
+            android:configChanges="orientation"/>
         <activity
             android:name=".ui.SessionLivestreamActivity"
             android:configChanges="orientation|screenSize"

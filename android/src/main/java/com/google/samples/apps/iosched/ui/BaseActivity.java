@@ -1014,7 +1014,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
 
     @Override
     public void onStart() {
-        IBeaconManager.getInstance().startScanning();
+//        IBeaconManager.getInstance().startScanning();
         LOGD(TAG, "onStart");
         super.onStart();
 
@@ -1178,7 +1178,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
 
     @Override
     public void onStop() {
-        IBeaconManager.getInstance().stopScanning();
+//        IBeaconManager.getInstance().stopScanning();
         LOGD(TAG, "onStop");
         super.onStop();
 
