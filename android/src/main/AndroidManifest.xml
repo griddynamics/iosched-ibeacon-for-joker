@@ -120,7 +120,7 @@
             android:name="com.google.samples.apps.ibeaconapp.IBeaconActivity"
             android:label="@string/navdrawer_item_ibeacon"
             android:theme="@style/Theme.IOSched.Ibeacon"
-            android:configChanges="orientation"/>
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".ui.SessionLivestreamActivity"
             android:configChanges="orientation|screenSize"
