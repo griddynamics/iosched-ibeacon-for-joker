@@ -59,6 +59,7 @@ public class RoomsHandler extends JSONHandler {
             builder.withValue(ScheduleContract.Rooms.ROOM_ID, room.id);
             builder.withValue(ScheduleContract.Rooms.ROOM_NAME, room.name);
             builder.withValue(ScheduleContract.Rooms.ROOM_FLOOR, room.floor);
+            builder.withValue(ScheduleContract.Rooms.ROOM_BEACON_MAC_ADDRESS, room.beaconMACAddress);
             list.add(builder.build());
         }
     }

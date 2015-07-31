@@ -92,6 +92,8 @@ public class ScheduleContract {
         String ROOM_NAME = "room_name";
         /** Building floor this room exists on. */
         String ROOM_FLOOR = "room_floor";
+        /** MAC address of the beacon that belongs to this room */
+        String ROOM_BEACON_MAC_ADDRESS = "room_beacon_mac_address";
     }
 
     interface MyScheduleColumns {
