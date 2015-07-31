@@ -1,8 +1,12 @@
 package com.google.samples.apps.ibeaconapp.lightbluebean;
 
 import android.app.Activity;
+import android.content.CursorLoader;
+import android.database.Cursor;
 import android.widget.ArrayAdapter;
 import com.google.samples.apps.ibeaconapp.beaconinterface.IBeaconInterface;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+
 import nl.littlerobots.bean.Bean;
 import nl.littlerobots.bean.BeanDiscoveryListener;
 import nl.littlerobots.bean.BeanManager;
@@ -26,8 +30,25 @@ public class LightBlueBeanManager implements IBeaconInterface {
 
             @Override
             public void onBeanDiscovered(Bean bean, int rssi, List<UUID> list) {
+
+                String selection = ScheduleContract.Rooms.ROOM_BEACON_MAC_ADDRESS + "=?";
+                final Cursor c = iBeaconActivity.getContentResolver().query(
+                        ScheduleContract.Rooms.CONTENT_URI,
+                        new String[] {ScheduleContract.Rooms.ROOM_NAME},
+                        selection,
+                        new String[] {bean.getDevice().getAddress()},
+                        null);
+
+                String roomName = null;
+
+                if (c != null && c.moveToFirst()) {
+                    roomName = c.getString(c.getColumnIndex(ScheduleContract.Rooms.ROOM_NAME));
+                }
+                c.close();
+
                 beaconRssiList.add("Name: " + bean.getDevice().getName() + "\nAddress: "
-                        + bean.getDevice().getAddress() + "\nRSSI: " + rssi + "dBm");
+                        + bean.getDevice().getAddress() + "\nRSSI: " + rssi + "dBm"
+                        + "\nRoom name: " + roomName);
             }
 
             @Override

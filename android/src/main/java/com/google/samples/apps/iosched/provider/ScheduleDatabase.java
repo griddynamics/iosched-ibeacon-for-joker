@@ -209,6 +209,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + RoomsColumns.ROOM_ID + " TEXT NOT NULL,"
                 + RoomsColumns.ROOM_NAME + " TEXT,"
                 + RoomsColumns.ROOM_FLOOR + " TEXT,"
+                + RoomsColumns.ROOM_BEACON_MAC_ADDRESS + " TEXT,"
                 + "UNIQUE (" + RoomsColumns.ROOM_ID + ") ON CONFLICT REPLACE)");
 
         db.execSQL("CREATE TABLE " + Tables.SESSIONS + " ("
