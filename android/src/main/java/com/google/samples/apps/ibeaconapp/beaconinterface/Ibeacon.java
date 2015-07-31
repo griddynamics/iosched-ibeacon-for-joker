@@ -2,7 +2,7 @@ package com.google.samples.apps.ibeaconapp.beaconinterface;
 
 import android.bluetooth.BluetoothDevice;
 
-public interface Ibeacon {
+public interface IBeacon {
 
     String getName();
 

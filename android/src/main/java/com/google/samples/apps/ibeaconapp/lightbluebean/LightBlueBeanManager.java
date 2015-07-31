@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.CursorLoader;
 import android.database.Cursor;
 import android.widget.ArrayAdapter;
-import com.google.samples.apps.ibeaconapp.beaconinterface.IbeaconInerface;
+import com.google.samples.apps.ibeaconapp.beaconinterface.IBeaconInterface;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import nl.littlerobots.bean.Bean;
@@ -13,20 +13,21 @@ import nl.littlerobots.bean.BeanManager;
 
 import java.util.*;
 
-public class LightBlueBeanManager implements IbeaconInerface {
+public class LightBlueBeanManager implements IBeaconInterface {
 
     private Timer mTimer;
     private BeanUpdateTimerTask mTimerTask;
     private Activity iBeaconActivity;
     private ArrayAdapter listViewAdapter;
     private BeanDiscoveryListener beanDiscoveryListener;
-    private final long scanDelay = 4000L;
+    private long scanDelay = 4000L;
     private final long timerDelay = 1000L;
     private List<String> beaconRssiList = new ArrayList<String>();
 
-    public void showIbeacons(final ArrayAdapter adapter, final Activity iBeaconActivity) {
+    public void showIBeacons(final ArrayAdapter adapter, final Activity iBeaconActivity) {
 
         beanDiscoveryListener = new BeanDiscoveryListener() {
+
             @Override
             public void onBeanDiscovered(Bean bean, int rssi, List<UUID> list) {
 
@@ -64,7 +65,6 @@ public class LightBlueBeanManager implements IbeaconInerface {
         mTimerTask = new BeanUpdateTimerTask();
         listViewAdapter = adapter;
         this.iBeaconActivity = iBeaconActivity;
-        BeanManager.setScanTimeout(scanDelay);
         BeanManager.setScanTimeout(scanDelay);
         mTimer.schedule(mTimerTask, 0, scanDelay + timerDelay);
     }

@@ -14,9 +14,9 @@ import java.util.List;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class IbeaconActivity extends BaseActivity {
-    private static final String TAG = makeLogTag(IbeaconActivity.class);
-    private static final String SCREEN_LABEL = "Ibeacon";
+public class IBeaconActivity extends BaseActivity {
+    private static final String TAG = makeLogTag(IBeaconActivity.class);
+    private static final String SCREEN_LABEL = "IBeacon";
     private List<String> beansStrings = new ArrayList<String>();
     ArrayAdapter<String> adapter = null;
 
@@ -35,7 +35,7 @@ public class IbeaconActivity extends BaseActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beansStrings);
         listView.setAdapter(adapter);
 
-        lightBlueBeanManager.showIbeacons(adapter, IbeaconActivity.this);
+        lightBlueBeanManager.showIBeacons(adapter, IBeaconActivity.this);
 
         adapter.notifyDataSetChanged();
 
