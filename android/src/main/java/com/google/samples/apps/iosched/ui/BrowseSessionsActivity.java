@@ -141,18 +141,6 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        System.out.println("Browse activity START");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        System.out.println("Browse activity STOP");
-    }
-
-    @Override
     public boolean canSwipeRefreshChildScrollUp() {
         if (mSessionsFrag != null) {
             return mSessionsFrag.canCollectionViewScrollUp();
