@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter;
 import nl.littlerobots.bean.Bean;
 
 import java.util.HashMap;
+import java.util.List;
 
 public interface IBeaconInterface {
 
@@ -12,6 +13,6 @@ public interface IBeaconInterface {
 
     void stopScanning();
 
-    HashMap<Bean, Integer> getBeansAndRssi();
+    List<IBeacon> getIBeacons();
 
 }

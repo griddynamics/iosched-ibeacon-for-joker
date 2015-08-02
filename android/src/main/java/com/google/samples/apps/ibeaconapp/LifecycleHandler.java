@@ -5,6 +5,21 @@ import android.app.Application;
 import android.os.Bundle;
 import com.google.samples.apps.ibeaconapp.lightbluebean.IBeaconManager;
 
+
+/**
+ * Class for checking if an Android application is running in the background.
+ *
+ * Uses ActivityLifecycleCallbacks (note that this requires Android
+ * API level 14 (Android 4.0)). Just checking if the number of stopped
+ * activities is equal to the number of started activities. If they're
+ * equal, the application is being backgrounded. If there are more started
+ * activities, the application is still visible. If there are more resumed
+ * than paused activities, the application is not only visible, but it's also
+ * in the foreground. There are 3 main states that the activity can
+ * be in, then: visible and in the foreground, visible but not in the foreground,
+ * and not visible and not in the foreground (i.e. in the background).
+ * link http://stackoverflow.com/questions/3667022/checking-if-an-android-application-is-running-in-the-background/13809991#13809991
+ */
 public class LifecycleHandler implements Application.ActivityLifecycleCallbacks {
     private int resumed;
     private int paused;

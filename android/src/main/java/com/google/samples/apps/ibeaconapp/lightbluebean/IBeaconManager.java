@@ -1,22 +1,22 @@
 package com.google.samples.apps.ibeaconapp.lightbluebean;
 
+import com.google.samples.apps.ibeaconapp.beaconinterface.IBeacon;
 import com.google.samples.apps.ibeaconapp.beaconinterface.IBeaconInterface;
 import nl.littlerobots.bean.Bean;
 import nl.littlerobots.bean.BeanDiscoveryListener;
 import nl.littlerobots.bean.BeanManager;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class IBeaconManager implements IBeaconInterface {
 
     private static volatile IBeaconManager instance;
-    private BeanDiscoveryListener beanDiscoveryListener;
-    private volatile HashMap<Bean, Integer> tempBeansAndRssi = new HashMap<Bean, Integer>();
-    private volatile HashMap<Bean, Integer> beansAndRssi = new HashMap<Bean, Integer>();
-    private long scanDelay = 4000L;
-    private final long timerDelay = 1000L;
+    private static BeanDiscoveryListener beanDiscoveryListener;
+    private List<IBeacon> iBeacons = new CopyOnWriteArrayList<IBeacon>();
+    private static final long SCAN_DELAY = 4000L;
+    private static final long TIMER_DELAY = 1000L;
     private Timer mTimer;
-    private boolean isStarted = false;
 
     public static IBeaconManager getInstance() {
         IBeaconManager localInstance = instance;
@@ -33,24 +33,28 @@ public class IBeaconManager implements IBeaconInterface {
 
     public void startScanning() {
         android.util.Log.w("test", "in start THREAD:" + Thread.currentThread().getName());
+
         beanDiscoveryListener = new BeanDiscoveryListener() {
+
+            private List<IBeacon> tempIBeacon = new ArrayList<IBeacon>();
+
             @Override
             public void onBeanDiscovered(Bean bean, int rssi, List<UUID> list) {
-                tempBeansAndRssi.put(bean, rssi);
+                tempIBeacon.add(new Beacon(bean, rssi));
             }
 
             @Override
             public void onDiscoveryComplete() {
-                beansAndRssi.clear();
-                beansAndRssi.putAll(tempBeansAndRssi);
-                tempBeansAndRssi.clear();
+                iBeacons.clear();
+                iBeacons.addAll(tempIBeacon);
+                tempIBeacon.clear();
             }
         };
 
         mTimer = new Timer();
         BeanUpdateTimerTask mTimerTask = new BeanUpdateTimerTask();
-        BeanManager.setScanTimeout(scanDelay);
-        mTimer.schedule(mTimerTask, 0, scanDelay + timerDelay);
+        BeanManager.setScanTimeout(SCAN_DELAY);
+        mTimer.schedule(mTimerTask, 0, SCAN_DELAY + TIMER_DELAY);
     }
 
     class BeanUpdateTimerTask extends TimerTask {
@@ -60,8 +64,9 @@ public class IBeaconManager implements IBeaconInterface {
         }
     }
 
-    public HashMap<Bean, Integer> getBeansAndRssi() {
-        return beansAndRssi;
+    public List<IBeacon> getIBeacons() {
+        Collections.sort(iBeacons);
+        return iBeacons;
     }
 
     public void stopScanning() {

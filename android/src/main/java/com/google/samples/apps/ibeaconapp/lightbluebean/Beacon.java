@@ -4,14 +4,14 @@ import android.bluetooth.BluetoothDevice;
 import com.google.samples.apps.ibeaconapp.beaconinterface.IBeacon;
 import nl.littlerobots.bean.Bean;
 
-public class LightBlueBeanBeacon implements IBeacon {
+public class Beacon implements IBeacon {
 
     private Bean bean;
+    private int rssi;
 
-    public LightBlueBeanBeacon(Bean bean) {
-
+    public Beacon(Bean bean, int rssi) {
         this.bean = bean;
-
+        this.rssi = rssi;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class LightBlueBeanBeacon implements IBeacon {
 
     @Override
     public String getAddress() {
-        return bean.getDevice().getAddress();
+        return bean.getDevice().getName();
     }
 
     @Override
@@ -29,4 +29,18 @@ public class LightBlueBeanBeacon implements IBeacon {
         return bean.getDevice();
     }
 
+    @Override
+    public Bean getBean() {
+        return bean;
+    }
+
+    @Override
+    public int getRssi() {
+        return rssi;
+    }
+
+    @Override
+    public int compareTo(IBeacon another) {
+        return rssi < another.getRssi() ? -1 : (rssi == another.getRssi() ? 0 : 1);
+    }
 }
