@@ -18,7 +18,7 @@ public class IBeaconManager implements IBeaconInterface {
 
     private static volatile IBeaconManager instance;
     private static BeanDiscoveryListener beanDiscoveryListener;
-    private List<IBeacon> iBeacons = new ArrayList<>();
+    private List<IBeacon> iBeacons = new ArrayList<IBeacon>();
     private static final long SCAN_DELAY = 4000L;
     private static final long TIMER_DELAY = 1000L;
     private Timer mTimer;
@@ -82,10 +82,8 @@ public class IBeaconManager implements IBeaconInterface {
     }
 
     public List<IBeacon> getIBeacons() {
-        List<IBeacon> iBeaconsListSorted = new ArrayList<IBeacon>();
-        iBeaconsListSorted.addAll(iBeacons);
-        Collections.sort(iBeaconsListSorted);
-        return iBeaconsListSorted;
+        Collections.sort(iBeacons);
+        return iBeacons;
     }
 
     public void stopScanning() {

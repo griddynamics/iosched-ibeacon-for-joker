@@ -53,6 +53,6 @@ public class Beacon implements IBeacon {
 
     @Override
     public int compareTo(IBeacon another) {
-        return rssi > another.getRssi() ? -1 : (rssi == another.getRssi() ? 1 : 0);
+        return another.getRssi() < rssi  ? -1 : (rssi == another.getRssi() ? 0 : 1);
     }
 }
