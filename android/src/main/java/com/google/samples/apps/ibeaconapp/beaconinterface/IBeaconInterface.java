@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IBeaconInterface {
 
-    void startScanning();
+    void startScanning(Activity activity);
 
     void stopScanning();
 

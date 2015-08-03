@@ -1,12 +1,16 @@
 package com.google.samples.apps.ibeaconapp;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.samples.apps.ibeaconapp.beaconinterface.IBeacon;
+
 import com.google.samples.apps.ibeaconapp.lightbluebean.IBeaconManager;
 import com.google.samples.apps.iosched.R;
+
 import com.google.samples.apps.iosched.ui.BaseActivity;
+
 
 import java.util.*;
 
@@ -28,7 +32,6 @@ public class IBeaconActivity extends BaseActivity {
         ListView listView = (ListView) findViewById(R.id.IbeaconListView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beansStrings);
         listView.setAdapter(adapter);
-        updateAdapter();
     }
 
     @Override
@@ -48,8 +51,11 @@ public class IBeaconActivity extends BaseActivity {
         adapter.clear();
         for (IBeacon iBeacon : iBeacons) {
             adapter.add("Name: " + iBeacon.getName() + "\nAddress: "
-                    + iBeacon.getAddress() + "\nRSSI: " + iBeacon.getRssi() + "dBm");
+                    + iBeacon.getAddress() + "\nRSSI: " + iBeacon.getRssi() + "dBm" + "\nRoom name: " + iBeacon.getRoomName());
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
+
     }
+
 }
+

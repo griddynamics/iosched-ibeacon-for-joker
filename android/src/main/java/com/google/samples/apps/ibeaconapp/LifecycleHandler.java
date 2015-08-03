@@ -43,7 +43,7 @@ public class LifecycleHandler implements Application.ActivityLifecycleCallbacks 
         ++resumed;
         android.util.Log.w("test", "onActivityResumed" + "resumed:" + resumed + " paused:" + paused);
         if (resumed > paused && isStopped) {
-            IBeaconManager.getInstance().startScanning();
+            IBeaconManager.getInstance().startScanning(activity);
             android.util.Log.w("test", "onActivityResumed" + " START SCANNING!");
             isStopped = false;
         }

@@ -15,4 +15,6 @@ public interface IBeacon extends Comparable<IBeacon> {
 
     int getRssi();
 
+    String getRoomName();
+
 }

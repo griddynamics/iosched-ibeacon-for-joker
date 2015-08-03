@@ -8,10 +8,22 @@ public class Beacon implements IBeacon {
 
     private Bean bean;
     private int rssi;
+    private String roomName;
+
+    public Beacon(Bean bean, int rssi, String roomName) {
+        this.bean = bean;
+        this.rssi = rssi;
+        this.roomName = roomName;
+    }
 
     public Beacon(Bean bean, int rssi) {
         this.bean = bean;
         this.rssi = rssi;
+    }
+
+    @Override
+    public String getRoomName() {
+        return roomName;
     }
 
     @Override
@@ -41,6 +53,6 @@ public class Beacon implements IBeacon {
 
     @Override
     public int compareTo(IBeacon another) {
-        return rssi < another.getRssi() ? -1 : (rssi == another.getRssi() ? 0 : 1);
+        return rssi > another.getRssi() ? -1 : (rssi == another.getRssi() ? 1 : 0);
     }
 }
