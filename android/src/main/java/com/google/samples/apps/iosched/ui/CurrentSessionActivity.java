@@ -16,10 +16,12 @@
 
 package com.google.samples.apps.iosched.ui;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Resources;
@@ -51,6 +53,8 @@ import com.bumptech.glide.request.bitmap.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.plus.PlusOneButton;
 import com.google.android.youtube.player.YouTubeIntents;
+import com.google.samples.apps.ibeaconapp.beaconinterface.IBeacon;
+import com.google.samples.apps.ibeaconapp.lightbluebean.IBeaconManager;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
@@ -181,80 +185,83 @@ public class CurrentSessionActivity extends BaseActivity implements
         if (shouldBeFloatingWindow) {
             setupFloatingWindow();
         }
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_session);
-
-        final Toolbar toolbar = getActionBarToolbar();
-        toolbar.setNavigationIcon(shouldBeFloatingWindow
-                ? R.drawable.ic_ab_close : R.drawable.ic_up);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                toolbar.setTitle("");
-            }
-        });
-
         mSessionId = getCurrentSessionId();
-        mSessionUri = ScheduleContract.Sessions.buildSessionUri(mSessionId);
+        if (mSessionId == null) {
+            complainMissingCurrentTalkId();
+        } else {
+            setContentView(R.layout.activity_current_session);
 
-        mFABElevation = getResources().getDimensionPixelSize(R.dimen.fab_elevation);
-        mMaxHeaderElevation = getResources().getDimensionPixelSize(
-                R.dimen.session_detail_max_header_elevation);
-
-        mTagColorDotSize = getResources().getDimensionPixelSize(R.dimen.tag_color_dot_size);
-
-        mHandler = new Handler();
-
-        if (mSpeakersImageLoader == null) {
-            mSpeakersImageLoader = new ImageLoader(this, R.drawable.person_image_empty);
-        }
-        if (mNoPlaceholderImageLoader == null) {
-            mNoPlaceholderImageLoader = new ImageLoader(this);
-        }
-
-        mScrollView = (ObservableScrollView) findViewById(R.id.scroll_view);
-        mScrollView.addCallbacks(this);
-        ViewTreeObserver vto = mScrollView.getViewTreeObserver();
-        if (vto.isAlive()) {
-            vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
-        }
-
-        mScrollViewChild = findViewById(R.id.scroll_view_child);
-        mScrollViewChild.setVisibility(View.INVISIBLE);
-
-        mDetailsContainer = findViewById(R.id.details_container);
-        mHeaderBox = findViewById(R.id.header_session);
-        mTitle = (TextView) findViewById(R.id.session_title);
-        mSubtitle = (TextView) findViewById(R.id.session_subtitle);
-        mPhotoViewContainer = findViewById(R.id.session_photo_container);
-        mPhotoView = (ImageView) findViewById(R.id.session_photo);
-
-        mPlusOneButton = (PlusOneButton) findViewById(R.id.plus_one_button);
-        mAbstract = (TextView) findViewById(R.id.session_abstract);
-        mRequirements = (TextView) findViewById(R.id.session_requirements);
-        mTags = (LinearLayout) findViewById(R.id.session_tags);
-        mTagsContainer = (ViewGroup) findViewById(R.id.session_tags_container);
-
-        mAddScheduleButton = (CheckableFrameLayout) findViewById(R.id.add_schedule_button);
-        mAddScheduleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean starred = !mStarred;
-                SessionsHelper helper = new SessionsHelper(CurrentSessionActivity.this);
-                showStarred(starred, true);
-                helper.setSessionStarred(mSessionUri, starred, mTitleString);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mAddScheduleButton.announceForAccessibility(starred ?
-                            getString(R.string.session_details_a11y_session_added) :
-                            getString(R.string.session_details_a11y_session_removed));
+            final Toolbar toolbar = getActionBarToolbar();
+            toolbar.setNavigationIcon(shouldBeFloatingWindow
+                    ? R.drawable.ic_ab_close : R.drawable.ic_up);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
                 }
+            });
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    toolbar.setTitle("");
+                }
+            });
+
+
+            mSessionUri = ScheduleContract.Sessions.buildSessionUri(mSessionId);
+
+            mFABElevation = getResources().getDimensionPixelSize(R.dimen.fab_elevation);
+            mMaxHeaderElevation = getResources().getDimensionPixelSize(
+                    R.dimen.session_detail_max_header_elevation);
+
+            mTagColorDotSize = getResources().getDimensionPixelSize(R.dimen.tag_color_dot_size);
+
+            mHandler = new Handler();
+
+            if (mSpeakersImageLoader == null) {
+                mSpeakersImageLoader = new ImageLoader(this, R.drawable.person_image_empty);
+            }
+            if (mNoPlaceholderImageLoader == null) {
+                mNoPlaceholderImageLoader = new ImageLoader(this);
+            }
+
+            mScrollView = (ObservableScrollView) findViewById(R.id.scroll_view);
+            mScrollView.addCallbacks(this);
+            ViewTreeObserver vto = mScrollView.getViewTreeObserver();
+            if (vto.isAlive()) {
+                vto.addOnGlobalLayoutListener(mGlobalLayoutListener);
+            }
+
+            mScrollViewChild = findViewById(R.id.scroll_view_child);
+            mScrollViewChild.setVisibility(View.INVISIBLE);
+
+            mDetailsContainer = findViewById(R.id.details_container);
+            mHeaderBox = findViewById(R.id.header_session);
+            mTitle = (TextView) findViewById(R.id.session_title);
+            mSubtitle = (TextView) findViewById(R.id.session_subtitle);
+            mPhotoViewContainer = findViewById(R.id.session_photo_container);
+            mPhotoView = (ImageView) findViewById(R.id.session_photo);
+
+            mPlusOneButton = (PlusOneButton) findViewById(R.id.plus_one_button);
+            mAbstract = (TextView) findViewById(R.id.session_abstract);
+            mRequirements = (TextView) findViewById(R.id.session_requirements);
+            mTags = (LinearLayout) findViewById(R.id.session_tags);
+            mTagsContainer = (ViewGroup) findViewById(R.id.session_tags_container);
+
+            mAddScheduleButton = (CheckableFrameLayout) findViewById(R.id.add_schedule_button);
+            mAddScheduleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean starred = !mStarred;
+                    SessionsHelper helper = new SessionsHelper(CurrentSessionActivity.this);
+                    showStarred(starred, true);
+                    helper.setSessionStarred(mSessionUri, starred, mTitleString);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        mAddScheduleButton.announceForAccessibility(starred ?
+                                getString(R.string.session_details_a11y_session_added) :
+                                getString(R.string.session_details_a11y_session_removed));
+                    }
 
                 /* [ANALYTICS:EVENT]
                  * TRIGGER:   Add or remove a session from My Schedule.
@@ -263,21 +270,109 @@ public class CurrentSessionActivity extends BaseActivity implements
                  * LABEL:     Session title/subtitle.
                  * [/ANALYTICS]
                  */
-                AnalyticsManager.sendEvent(
-                        "Session", starred ? "Starred" : "Unstarred", mTitleString, 0L);
-            }
-        });
+                    AnalyticsManager.sendEvent(
+                            "Session", starred ? "Starred" : "Unstarred", mTitleString, 0L);
+                }
+            });
 
-        ViewCompat.setTransitionName(mPhotoView, TRANSITION_NAME_PHOTO);
+            ViewCompat.setTransitionName(mPhotoView, TRANSITION_NAME_PHOTO);
 
-        LoaderManager manager = getLoaderManager();
-        manager.initLoader(SessionsQuery._TOKEN, null, this);
-        manager.initLoader(SpeakersQuery._TOKEN, null, this);
-        manager.initLoader(TAG_METADATA_TOKEN, null, this);
+            LoaderManager manager = getLoaderManager();
+            manager.initLoader(SessionsQuery._TOKEN, null, this);
+            manager.initLoader(SpeakersQuery._TOKEN, null, this);
+            manager.initLoader(TAG_METADATA_TOKEN, null, this);
+        }
+    }
+
+    private void complainMissingCurrentTalkId() {
+        LOGD(TAG, "Complaining about missing current talk id");
+        new AlertDialog.Builder(this)
+                .setTitle("Can't show current session")
+                .setMessage("Couldn't find current session")
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(CurrentSessionActivity.this, BrowseSessionsActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                })
+                .show();
     }
 
     private String getCurrentSessionId() {
-        return "b4310e6e-eccf-e311-b297-00155d5066d7";
+        List<IBeacon> iBeacons = IBeaconManager.getInstance().getIBeacons();
+        if (iBeacons != null && iBeacons.size() > 0 && iBeacons.get(0).getRoomId() != null) {
+
+            String selection = "sessions.room_id" + "=? " + "AND (session_start <= ? AND session_end >= ?)";
+            String sortOrder = null;
+            String sessionId = null;
+            String roomId = iBeacons.get(0).getRoomId();
+            final Long currentTime = UIUtils.getCurrentTime(this);
+            Cursor c = this.getContentResolver().query(
+                    ScheduleContract.Sessions.CONTENT_URI,
+                    new String[]{
+                            ScheduleContract.Sessions.SESSION_ID
+                    },
+                    selection,
+                    new String[]{roomId, currentTime.toString(), currentTime.toString()},
+                    sortOrder);
+            if (c != null && c.moveToFirst()) {
+
+                sessionId = c.getString(c.getColumnIndex(ScheduleContract.Sessions.SESSION_ID));
+
+            }
+            c.close();
+
+            if (sessionId == null) {
+                selection = "sessions.room_id" + "=? " + "AND session_start >= ?";
+                sortOrder = "session_start ASC";
+
+                sessionId = null;
+                c = this.getContentResolver().query(
+                        ScheduleContract.Sessions.CONTENT_URI,
+                        new String[]{
+                                ScheduleContract.Sessions.SESSION_ID
+                        },
+                        selection,
+                        new String[]{roomId, currentTime.toString()},
+                        sortOrder);
+                if (c != null && c.moveToFirst()) {
+
+                    sessionId = c.getString(c.getColumnIndex(ScheduleContract.Sessions.SESSION_ID));
+
+                }
+                c.close();
+
+
+            }
+            if (sessionId == null) {
+                selection = "sessions.room_id" + "=? ";
+                sortOrder = "session_end DESC";
+
+
+                c = this.getContentResolver().query(
+                        ScheduleContract.Sessions.CONTENT_URI,
+                        new String[]{
+                                ScheduleContract.Sessions.SESSION_ID
+                        },
+                        selection,
+                        new String[]{roomId},
+                        sortOrder);
+                if (c != null && c.moveToFirst()) {
+
+                    sessionId = c.getString(c.getColumnIndex(ScheduleContract.Sessions.SESSION_ID));
+
+                }
+                c.close();
+            }
+
+            return sessionId;
+
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -383,6 +478,7 @@ public class CurrentSessionActivity extends BaseActivity implements
 
     @Override
     public void onResume() {
+        mSessionId = getCurrentSessionId();
         super.onResume();
         updatePlusOneButton();
         if (mTimeHintUpdaterRunnable != null) {
@@ -391,8 +487,6 @@ public class CurrentSessionActivity extends BaseActivity implements
 
         // Refresh whether or not feedback has been submitted
         getLoaderManager().restartLoader(FeedbackQuery._TOKEN, null, this);
-        //getNewCurrentRoom
-
     }
 
     @Override

@@ -17,4 +17,5 @@ public interface IBeacon extends Comparable<IBeacon> {
 
     String getRoomName();
 
+    String getRoomId();
 }
