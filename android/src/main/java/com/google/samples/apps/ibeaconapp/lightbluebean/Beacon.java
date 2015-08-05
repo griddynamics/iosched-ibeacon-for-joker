@@ -9,11 +9,13 @@ public class Beacon implements IBeacon {
     private Bean bean;
     private int rssi;
     private String roomName;
+    private String roomId;
 
-    public Beacon(Bean bean, int rssi, String roomName) {
+    public Beacon(Bean bean, int rssi, String roomName, String roomId) {
         this.bean = bean;
         this.rssi = rssi;
         this.roomName = roomName;
+        this.roomId = roomId;
     }
 
     public Beacon(Bean bean, int rssi) {
@@ -49,6 +51,11 @@ public class Beacon implements IBeacon {
     @Override
     public int getRssi() {
         return rssi;
+    }
+
+    @Override
+    public String getRoomId() {
+        return roomId;
     }
 
     @Override

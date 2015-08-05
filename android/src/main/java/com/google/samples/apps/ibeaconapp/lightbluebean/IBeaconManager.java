@@ -46,18 +46,23 @@ public class IBeaconManager implements IBeaconInterface {
             @Override
             public void onBeanDiscovered(Bean bean, int rssi, List<UUID> list) {
                 String roomName = null;
+                String roomId = null;
                 String selection = ScheduleContract.Rooms.ROOM_BEACON_MAC_ADDRESS + "=?";
                 final Cursor c = activity.getContentResolver().query(
                         ScheduleContract.Rooms.CONTENT_URI,
-                        new String[]{ScheduleContract.Rooms.ROOM_NAME},
+                        new String[]{
+                                ScheduleContract.Rooms.ROOM_NAME,
+                                ScheduleContract.Rooms.ROOM_ID
+                        },
                         selection,
                         new String[]{(bean.getDevice().getAddress())},
                         null);
                 if (c != null && c.moveToFirst()) {
                     roomName = c.getString(c.getColumnIndex(ScheduleContract.Rooms.ROOM_NAME));
+                    roomId = c.getString(c.getColumnIndex(ScheduleContract.Rooms.ROOM_ID));
                 }
                 c.close();
-                tempIBeacon.add(new Beacon(bean, rssi, roomName));
+                tempIBeacon.add(new Beacon(bean, rssi, roomName, roomId));
             }
 
             @Override

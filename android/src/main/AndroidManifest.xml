@@ -117,6 +117,13 @@
                 android:label="@string/navdrawer_item_social"
                 android:theme="@style/Theme.IOSched.Social"/>
         <activity
+            android:name=".ui.CurrentSessionActivity"
+            android:label="@string/navdrawer_item_current_session"
+            android:theme="@style/Theme.IOSched.SessionDetails"
+            android:configChanges="orientation|screenSize"
+            />
+
+        <activity
                 android:name="com.google.samples.apps.ibeaconapp.IBeaconActivity"
                 android:label="@string/navdrawer_item_ibeacon"
                 android:theme="@style/Theme.IOSched.Ibeacon"
